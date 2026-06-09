@@ -15,13 +15,13 @@
             <p class="text-sm text-slate-400">Ingresa tus credenciales para acceder al CRUD</p>
         </div>
 
-        @if(session('error'))
-            <div class="bg-red-500/10 border border-red-500/20 text-red-400 p-4 rounded-xl text-sm flex items-center gap-3">
-                <p>{{ session('error') }}</p>
-            </div>
-        @endif
+        @if (session('error'))
+    <div style="color: red; margin-bottom: 10px;">
+        {{ session('error') }}
+    </div>
+@endif
 
-        <form action="/login-procesar" method="POST" class="space-y-4">
+        <form action="/login" method="POST" class="space-y-4">
             @csrf
             
             <div>
