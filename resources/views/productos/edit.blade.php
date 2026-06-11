@@ -1,54 +1,103 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar Producto</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-</head>
-<body class="bg-gray-100 text-gray-800 min-h-screen flex items-center justify-center p-4">
+@extends('layouts.app')
 
-    <div class="w-full max-w-md bg-white border border-gray-200 rounded-2xl shadow-xl p-8 space-y-6">
-        <div>
-            <h1 class="text-2xl font-bold text-gray-900">Editar Producto</h1>
-            <p class="text-sm text-gray-500">Modifica los datos del producto seleccionado.</p>
-        </div>
+@section('title', 'Editar Producto')
 
-        <form action="{{ route('productos.update', $producto->id) }}" method="POST" class="space-y-4">
+@section('content')
+<div class="block w-full max-w-2xl mx-auto py-12 px-4 sm:px-6">
+    
+    <div class="mb-8">
+        <h2 class="text-3xl font-bold tracking-tight text-gray-900">Editar Producto</h2>
+        <p class="text-sm text-gray-500 mt-2">Modifica los datos del producto seleccionado para actualizar el inventario.</p>
+    </div>
+
+    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 sm:p-8">
+        <form action="{{ route('productos.update', $producto->id) }}" method="POST" class="space-y-6">
             @csrf
             @method('PUT') 
 
             <div>
-                <label class="block text-xs font-semibold uppercase tracking-wider text-gray-600 mb-2">Nombre del Producto</label>
-                <input type="text" name="nombre" value="{{ old('nombre', $producto->nombre) }}" 
-                        class="w-full bg-white border border-gray-300 rounded-xl px-4 py-3 text-sm text-gray-900 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition">
-                @error('nombre') <span class="text-xs text-red-500 mt-1 block">{{ $message }}</span> @enderror
+                <label class="block text-sm font-medium text-gray-700 mb-2">Nombre del Producto</label>
+                <input type="text" name="nombre" value="{{ old('nombre', $producto->nombre) }}" required
+                        class="w-full px-4 py-3 rounded-xl border border-gray-300 bg-gray-50/50 text-sm text-gray-900 placeholder-gray-400
+                        focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 
+                        transition-all duration-200 @error('nombre') border-red-500 bg-red-50/30 focus:ring-red-500/20 focus:border-red-500 @enderror"
+                        placeholder="Ej. Mouse Gamer">
+                @error('nombre') 
+                    <p class="text-red-500 text-xs mt-2 font-medium flex items-center gap-1">
+                        <span class="inline-block w-1 h-1 bg-red-500 rounded-full"></span>{{ $message }}
+                    </p> 
+                @enderror
             </div>
 
             <div>
-                <label class="block text-xs font-semibold uppercase tracking-wider text-gray-600 mb-2">Descripción</label>
-                <textarea name="descripcion" rows="3" 
-                            class="w-full bg-white border border-gray-300 rounded-xl px-4 py-3 text-sm text-gray-900 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition">{{ old('descripcion', $producto->descripcion) }}</textarea>
-                @error('descripcion') <span class="text-xs text-red-500 mt-1 block">{{ $message }}</span> @enderror
+                <label class="block text-sm font-medium text-gray-700 mb-2">Categoría</label>
+                <div class="relative">
+                    <select name="categoria_id" required
+                            class="w-full px-4 py-3 rounded-xl border border-gray-300 bg-gray-50/50 text-sm text-gray-900 appearance-none
+                            focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 
+                            transition-all duration-200 @error('categoria_id') border-red-500 bg-red-50/30 focus:ring-red-500/20 focus:border-red-500 @enderror">
+                        @foreach($categorias as $categoria)
+                            <option value="{{ $categoria->id }}" {{ old('categoria_id', $producto->categoria_id) == $categoria->id ? 'selected' : '' }}>
+                                {{ $categoria->nombre }}
+                            </option>
+                        @endforeach
+                    </select>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-500">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </div>
+                </div>
+                @error('categoria_id') 
+                    <p class="text-red-500 text-xs mt-2 font-medium flex items-center gap-1">
+                        <span class="inline-block w-1 h-1 bg-red-500 rounded-full"></span>{{ $message }}
+                    </p> 
+                @enderror
             </div>
 
             <div>
-                <label class="block text-xs font-semibold uppercase tracking-wider text-gray-600 mb-2">Precio</label>
-                <input type="number" step="0.01" name="precio" value="{{ old('precio', $producto->precio) }}" 
-                        class="w-full bg-white border border-gray-300 rounded-xl px-4 py-3 text-sm text-gray-900 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition">
-                @error('precio') <span class="text-xs text-red-500 mt-1 block">{{ $message }}</span> @enderror
+                <label class="block text-sm font-medium text-gray-700 mb-2">Descripción</label>
+                <textarea name="descripcion" rows="3" placeholder="Ingresa una descripción detallada..."
+                            class="w-full px-4 py-3 rounded-xl border border-gray-300 bg-gray-50/50 text-sm text-gray-900 placeholder-gray-400
+                            focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 
+                            transition-all duration-200 @error('descripcion') border-red-500 bg-red-50/30 focus:ring-red-500/20 focus:border-red-500 @enderror">{{ old('descripcion', $producto->descripcion) }}</textarea>
+                @error('descripcion') 
+                    <p class="text-red-500 text-xs mt-2 font-medium flex items-center gap-1">
+                        <span class="inline-block w-1 h-1 bg-red-500 rounded-full"></span>{{ $message }}
+                    </p> 
+                @enderror
             </div>
 
-            <div class="flex space-x-3 pt-2">
-                <a href="{{ route('productos.index') }}" class="w-1/2 text-center bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-3 rounded-xl text-sm transition">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Precio (S/.)</label>
+                <div class="relative rounded-xl shadow-xs">
+                    <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-gray-500">
+                        <span class="text-sm">S/.</span>
+                    </div>
+                    <input type="number" step="0.01" name="precio" value="{{ old('precio', $producto->precio) }}" required
+                            class="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-300 bg-gray-50/50 text-sm text-gray-900
+                            focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 
+                            transition-all duration-200 @error('precio') border-red-500 bg-red-50/30 focus:ring-red-500/20 focus:border-red-500 @enderror"
+                            placeholder="0.00">
+                </div>
+                @error('precio') 
+                    <p class="text-red-500 text-xs mt-2 font-medium flex items-center gap-1">
+                        <span class="inline-block w-1 h-1 bg-red-500 rounded-full"></span>{{ $message }}
+                    </p> 
+                @enderror
+            </div>
+
+            <div class="flex items-center justify-end gap-3 pt-6 border-t border-gray-100 mt-8">
+                <a href="{{ route('productos.index') }}" 
+                    class="px-5 py-2.5 text-sm font-semibold text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-xl transition-all duration-200 text-center w-1/2 sm:w-auto">
                     Cancelar
                 </a>
-                <button type="submit" class="w-1/2 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3 rounded-xl text-sm shadow-md transition cursor-pointer">
+                <button type="submit" 
+                        class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-2.5 rounded-xl shadow-xs hover:shadow-sm active:scale-[0.98] transition-all duration-200 text-sm cursor-pointer text-center w-1/2 sm:w-auto">
                     Actualizar
                 </button>
             </div>
         </form>
     </div>
-
-</body>
-</html>
+</div>
+@endsection

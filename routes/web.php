@@ -1,27 +1,29 @@
 <?php
 
 use App\Http\Controllers\ProductoController;
+use App\Http\Controllers\CategoriaController;
+
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
 Route::get('/', function () {   
     if(session()->has('usuario_nombre')){
-        return redirect()->route('productos.index');
+        return redirect()->route('dashboard'); 
     }
-    return view('welcome');
+    return view('welcome'); 
 });
 
 Route::post('login', function (Request $request){
     $email = $request->input('email');
     $password = $request->input('password');
+    
     if($email === 'admin@gmail.com' && $password === '123'){
         session(['usuario_nombre' => 'Administrador']);
-        return redirect()->route('productos.index');
+        return redirect()->route('dashboard'); 
     }
     return redirect('/')->with('error','Credenciales invalidas. Intenta de nuevo.');
 });
 
-//rutas para el CRUD
 Route::middleware(['web'])->group(function () {
     Route::group(['middleware' => function ($request, $next) {
         if(!session()->has('usuario_nombre')){
@@ -29,8 +31,14 @@ Route::middleware(['web'])->group(function () {
         }
         return $next($request);
         }], function(){
+            
+            Route::get('/dashboard', function () {
+                return view('dashboard');
+            })->name('dashboard');
+
             Route::resource('productos', ProductoController::class);
-    });
+            Route::resource('categorias', CategoriaController::class);
+        });
 });
 
 Route::get('/logout', function(){
