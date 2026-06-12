@@ -34,25 +34,21 @@
 
     <script>
         document.addEventListener('click', function (e) {
-            // Detecta si el elemento cliqueado tiene la clase 'btn-eliminar'
             if (e.target && e.target.classList.contains('btn-eliminar')) {
-                e.preventDefault(); // Detiene el envío inmediato del formulario
-                
-                const form = e.target.closest('form'); // Encuentra el formulario contenedor
-
+                e.preventDefault(); 
+                const form = e.target.closest('form');
                 Swal.fire({
                     title: '¿Estás seguro?',
                     text: "Esta acción no se puede deshacer de ninguna manera.",
                     icon: 'warning',
                     showCancelButton: true,
-                    confirmButtonColor: '#dc2626', // Rojo
-                    cancelButtonColor: '#4f46e5',  // Índigo
+                    confirmButtonColor: '#dc2626', 
+                    cancelButtonColor: '#4f46e5',  
                     confirmButtonText: 'Sí, eliminar',
                     cancelButtonText: 'Cancelar',
-                    reverseButtons: true // Pone el botón de cancelar a la izquierda
-                }).then((result) => {
+                    reverseButtons: true 
                     if (result.isConfirmed) {
-                        form.submit(); // Envía el formulario si el usuario confirma
+                        form.submit(); 
                     }
                 });
             }
