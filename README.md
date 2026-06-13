@@ -1,58 +1,78 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Sistema de Gestión de Productos e Inventario
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Un sistema web desarrollado en **Laravel 11** que permite gestionar productos y categorías a través de un CRUD completo, protegido por un sistema de autenticación seguro y diseñado con una interfaz moderna en modo oscuro utilizando **Tailwind CSS** y alertas dinámicas con **SweetAlert2**.
 
-## About Laravel
+## Características
+- **Autenticación Segura:** Control de acceso de usuarios mediante Laravel Breeze.
+- **CRUD de Categorías:** Organización y clasificación de inventario.
+- **CRUD de Productos:** Gestión completa de los artículos del sistema.
+- **Interfaz Premium:** Diseño optimizado en modo oscuro (Dark Mode).
+- **Alertas Interactivas:** Confirmaciones visuales elegantes con SweetAlert2.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Requisitos Previos
+Antes de instalar, asegúrate de tener instalado en tu equipo:
+- [XAMPP](https://www.apachefriends.org/) (con PHP 8.2 o superior y MySQL).
+- [Composer](https://getcomposer.org/).
+- [Node.js y NPM](https://nodejs.org/).
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## Instalación y Despliegue
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Sigue estos pasos para ejecutar el proyecto en tu entorno local:
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 1. Clonar o descargar el proyecto
+Coloca la carpeta del proyecto dentro de tu directorio de desarrollo (ej. `C:/xampp/htdocs/proyecto`).
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
-
+### 2. Instalar las dependencias de PHP
+Abre una terminal en la raíz del proyecto y ejecuta:
 ```bash
-composer require laravel/boost --dev
+composer install
+```
+### 3. Instalar las dependencias de JavaScript y Estilos
+Instala los paquetes necesarios para Tailwind CSS ejecutando:
+```bash
+npm install
+```
+### 4. Configurar el archivo de entorno
+Duplica el archivo .env.example y renómbralo a .env. Abre el archivo .env y configura el nombre de tu base de datos y el idioma:
+```bash
+APP_NAME="Sistema de Productos"
+APP_LOCALE=es
 
-php artisan boost:install
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=nombre_de_tu_base_de_datos
+DB_USERNAME=root
+DB_PASSWORD=
+```
+Recuerda cambiar nombre_de_tu_base_de_datos por el nombre real que creaste en phpMyAdmin
+
+### 5. Generar la clave de la aplicación
+Ejecuta el siguiente comando para crear la clave de seguridad única del proyecto:
+```bash
+php artisan key:generate
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+### 6. Ejecutar las Migraciones (Crear tablas)
+Asegúrate de tener activado Apache y MySQL en el panel de XAMPP. Luego, crea las tablas en tu base de datos ejecutando:
+```bash
+php artisan migrate
+```
+Ejecución del Sistema
+Para levantar el proyecto y ver el diseño en el navegador, necesitas mantener dos terminales abiertas:
 
-## Contributing
+Terminal 1: Inicia el servidor local de Laravel:
+```bash
+php artisan serve
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Terminal 2: Inicia el compilador en tiempo real de Tailwind CSS (Vite):
+```bash
+npm run dev
+```
 
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Ingresa a http://127.0.0.1:8000 y el sistema te llevará directamente a la pantalla de inicio de sesión.
