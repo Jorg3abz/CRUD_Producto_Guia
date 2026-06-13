@@ -59,36 +59,33 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        // 1. Alerta de confirmación para ELIMINAR
         document.addEventListener('DOMContentLoaded', function() {
             const formularios = document.querySelectorAll('.form-eliminar');
             
             formularios.forEach(formulario => {
                 formulario.addEventListener('submit', function(e) {
-                    e.preventDefault(); // Detiene el envío automático
+                    e.preventDefault(); 
                     
                     Swal.fire({
                         title: '¿Estás seguro?',
                         text: "¡No podrás revertir esta acción!",
                         icon: 'warning',
                         showCancelButton: true,
-                        confirmButtonColor: '#4f46e5', // Color índigo de tus botones
-                        cancelButtonColor: '#ef4444',  // Color rojo
+                        confirmButtonColor: '#4f46e5', 
+                        cancelButtonColor: '#ef4444', 
                         confirmButtonText: 'Sí, eliminar',
                         cancelButtonText: 'Cancelar',
-                        background: '#1e293b',         // Fondo oscuro para hacer juego con tu panel
-                        color: '#ffffff'               // Texto blanco
+                        background: '#1e293b',         
+                        color: '#ffffff'             
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            this.submit(); // Si confirma, envía el formulario real
+                            this.submit(); 
                         }
                     });
                 });
             });
         });
 
-        // 2. Alertas de Éxito al Crear, Editar o Actualizar
-        // Laravel guarda mensajes temporales en la sesión (ej. back()->with('success', '...'))
         @if(session('success'))
             Swal.fire({
                 icon: 'success',

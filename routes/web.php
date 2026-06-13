@@ -5,10 +5,7 @@ use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ProfileController; 
 use Illuminate\Support\Facades\Route;
 
-
-Route::get('/', function () { 
-    return view('welcome'); 
-});
+Route::redirect('/', '/login');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -17,7 +14,6 @@ Route::get('/dashboard', function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('productos', ProductoController::class);
     Route::resource('categorias', CategoriaController::class);
-    
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
