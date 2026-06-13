@@ -2,46 +2,26 @@
 
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\CategoriaController;
-
+use App\Http\Controllers\ProfileController; 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request;
 
-Route::get('/', function () {   
-    if(session()->has('usuario_nombre')){
-        return redirect()->route('dashboard'); 
-    }
+
+Route::get('/', function () { 
     return view('welcome'); 
 });
 
-Route::post('login', function (Request $request){
-    $email = $request->input('email');
-    $password = $request->input('password');
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::resource('productos', ProductoController::class);
+    Route::resource('categorias', CategoriaController::class);
     
-    if($email === 'admin@gmail.com' && $password === '123'){
-        session(['usuario_nombre' => 'Administrador']);
-        return redirect()->route('dashboard'); 
-    }
-    return redirect('/')->with('error','Credenciales invalidas. Intenta de nuevo.');
+
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::middleware(['web'])->group(function () {
-    Route::group(['middleware' => function ($request, $next) {
-        if(!session()->has('usuario_nombre')){
-            return redirect('/')->with('error','Debes iniciar sesion primero para poder ingresar');
-        }
-        return $next($request);
-        }], function(){
-            
-            Route::get('/dashboard', function () {
-                return view('dashboard');
-            })->name('dashboard');
-
-            Route::resource('productos', ProductoController::class);
-            Route::resource('categorias', CategoriaController::class);
-        });
-});
-
-Route::get('/logout', function(){
-    session()->forget('usuario_nombre');
-    return redirect('/');
-});
+require __DIR__.'/auth.php';
